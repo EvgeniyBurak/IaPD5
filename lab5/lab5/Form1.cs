@@ -12,17 +12,17 @@ namespace lab5
 {
     public partial class Form1 : Form
     {
-        private readonly List<Device> _devices;
+        private readonly List<Device> devices;
 
         private int _item;
 
         public Form1()
         {
             InitializeComponent();
-            _devices = DeviceManager.GetDevices();
-            foreach (var device in _devices)
+            devices = DeviceManager.GetDevices();
+            foreach (var _device in devices)
             {
-                ListOfDevices.Items.Add(device.Name);
+                ListOfDevices.Items.Add(_device.Name);
             }
             TurnOn.Click += TurnOnClicked;
             TurnOff.Click += TurnOffClicked;
@@ -31,21 +31,33 @@ namespace lab5
 
         private void ShowInformation(Device device)
         {
-            DeviceDescription.Text = "GUID: " + device.ClassGuid +
-                                     "\r\n\r\nHardwareID: " + device.HardwareId +
-                                     "\r\n\r\nManufacturer: " + device.Manufacturer +
-                                     "\r\n\r\nProvider: " + device.Provider +
-                                     "\r\n\r\nDriver description: " + device.Description +
-                                     "\r\n\r\nDevice path: " + device.DevicePath +
-                                     "\r\n\r\nSystem path: " + device.SysPath +
-                                     "\r\n\r\nStatus: " + device.Status;
+        
+
+            textBox1.Text = device.ClassGuid;
+            textBox2.Text = device.HardwareId;
+            textBox3.Text = device.Manufacturer;
+            textBox4.Text = device.Provider;
+            textBox5.Text = device.Description;
+            textBox6.Text = device.DevicePath;
+            textBox7.Text = device.SysPath;
+            if (device.Status == true)
+            {
+                label13.Text = "Turn On";
+                label15.Text = "";
+            }
+            else
+            {
+                label15.Text = "Turn Off";
+                label13.Text = "";
+            }
+           
             TurnOn.Enabled = !device.Status;
             TurnOff.Enabled = device.Status;
         }
 
         private void ItemSelected(object sender, EventArgs e)
         {
-            ShowInformation(_devices[ListOfDevices.SelectedItems[0].Index]);
+            ShowInformation(devices[ListOfDevices.SelectedItems[0].Index]);
             _item = ListOfDevices.SelectedItems[0].Index;
         }
 
@@ -53,9 +65,9 @@ namespace lab5
         {
             try
             {
-                _devices[_item].ChangeConnection("Enable");
-                _devices[_item].Status = !_devices[_item].Status;
-                ShowInformation(_devices[ListOfDevices.SelectedItems[0].Index]);
+                devices[_item].ChangeConnection("Enable");
+                devices[_item].Status = !devices[_item].Status;
+                ShowInformation(devices[ListOfDevices.SelectedItems[0].Index]);
             }
             catch (Exception exception)
             {
@@ -67,14 +79,16 @@ namespace lab5
         {
             try
             {
-                _devices[_item].ChangeConnection("Disable");
-                _devices[_item].Status = !_devices[_item].Status;
-                ShowInformation(_devices[ListOfDevices.SelectedItems[0].Index]);
+                devices[_item].ChangeConnection("Disable");
+                devices[_item].Status = !devices[_item].Status;
+                ShowInformation(devices[ListOfDevices.SelectedItems[0].Index]);
             }
             catch (Exception exception)
             {
                 MessageBox.Show("Устройство не может быть отключено.");
             }
         }
+
+       
     }
 }

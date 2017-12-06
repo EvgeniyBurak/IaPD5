@@ -10,12 +10,12 @@ namespace lab5
     class DeviceManager
     {
 
-        public static ManagementObjectSearcher Searcher = new ManagementObjectSearcher(new ManagementScope("\\\\.\\root\\cimv2"),
+        public static ManagementObjectSearcher ObjSearcher = new ManagementObjectSearcher(new ManagementScope("\\\\.\\root\\cimv2"),
             new SelectQuery("SELECT * FROM Win32_PnPEntity"));
 
         public static List<Device> GetDevices()
         {
-            return (from ManagementBaseObject o in Searcher.Get()
+            return (from ManagementBaseObject o in ObjSearcher.Get()
                     select o as ManagementObject
                 into device
                     let driverInfo = GetDriverInfo(device)
